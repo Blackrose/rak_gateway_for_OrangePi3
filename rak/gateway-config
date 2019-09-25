@@ -156,19 +156,6 @@ write_json_active_lora_server()
     write_json_gateway_info "active_lora_server" $1
 }
 
-do_setup_admin_password() {
-    dialog --title "Setup pi password" --yesno "You will be asked to enter a new password." 5 60
-    RET=$?
-    if [ $RET -eq 0 ]; then
-        passwd pi
-        RET=$?
-        if [ $RET -eq 0 ]; then
-            dialog --title "Setup pi password" --msgbox "Password has been changed succesfully." 5 60
-        fi
-    fi
-    do_main_menu
-}
-
 do_restart_packet_forwarder() {
     systemctl stop ttn-gateway
     systemctl start ttn-gateway
@@ -621,20 +608,18 @@ do_main_menu() {
             return 0
         elif [ $RET -eq 0 ]; then
             case "$FUN" in
-                1) do_setup_admin_password;;
-                2) do_setup_channel_plan;;
-                3) do_restart_packet_forwarder;;
-                4) nano $LORA_PKT_PATH/global_conf.json && do_main_menu;;
-                5) submenu_networking;;
+                1) do_setup_channel_plan;;
+                2) do_restart_packet_forwarder;;
+                3) nano $LORA_PKT_PATH/global_conf.json && do_main_menu;;
+                4) submenu_networking;;
             esac
         fi
     elif [ "$GW_MODEL" = "RAK2247" ] || [ "$GW_MODEL" = "RAK833" ]; then
         FUN=$(dialog --title "$GW_MODEL (Gateway ID:$GW_ID  Version: $GW_VERSION)" --cancel-label "Quit" --menu "Configuration options:" 16 80 20 \
-            1 "Set pi password" \
-            2 "Setup RAK Gateway LoRa concentrator" \
-            3 "Restart packet-forwarder" \
-            4 "Edit packet-forwarder config" \
-            5 "Configure network" \
+            1 "Setup RAK Gateway LoRa concentrator" \
+            2 "Restart packet-forwarder" \
+            3 "Edit packet-forwarder config" \
+            4 "Configure network" \
             3>&1 1>&2 2>&3)
         RET=$?
         if [ $RET -eq 1 ]; then
@@ -642,11 +627,10 @@ do_main_menu() {
             return 0
         elif [ $RET -eq 0 ]; then
             case "$FUN" in
-                1) do_setup_admin_password;;
-                2) do_setup_channel_plan;;
-                3) do_restart_packet_forwarder;;
-                4) nano $LORA_PKT_PATH/global_conf.json && do_main_menu;;
-                5) submenu_networking;;
+                1) do_setup_channel_plan;;
+                2) do_restart_packet_forwarder;;
+                3) nano $LORA_PKT_PATH/global_conf.json && do_main_menu;;
+                4) submenu_networking;;
             esac
         fi
     else
