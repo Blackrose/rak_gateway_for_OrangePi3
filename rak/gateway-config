@@ -596,11 +596,10 @@ do_main_menu() {
     if [ "$GW_MODEL" = "RAK2245" ] || [ "$GW_MODEL" = "RAK831" ]; then
 
         FUN=$(dialog --title "$GW_MODEL (Gateway ID:$GW_ID  Version: $GW_VERSION)" --cancel-label "Quit" --menu "Configuration options:" 16 80 20 \
-            1 "Set pi password" \
-            2 "Setup RAK Gateway LoRa concentrator" \
-            3 "Restart packet-forwarder" \
-            4 "Edit packet-forwarder config" \
-            5 "Configure network" \
+            1 "Setup RAK Gateway LoRa concentrator" \
+            2 "Restart packet-forwarder" \
+            3 "Edit packet-forwarder config" \
+            4 "Configure network" \
             3>&1 1>&2 2>&3)
         RET=$?
         if [ $RET -eq 1 ]; then
